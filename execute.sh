@@ -54,8 +54,16 @@ if [ -z "${TEST_CMD}" ]; then
     xvfb-run npm test
 #test cmd provided so install typical items and run cmd
 else
-    npm install selenium-webdriver selenium-standalone wd-sync wd mocha mocha-phantomjs chai \
-    chai-as-promised phantomjs webdriverio chromedriver
+    npm install selenium-webdriver 
+    npm install selenium-standalone
+    npm install wd-sync
+    npm install wd 
+    npm install mocha
+    npm install mocha-phantomjs
+    npm install chai
+    npm install chai-as-promised
+    npm install webdriverio 
+    npm install chromedriver
     xvfb-run eval $TEST_CMD
 fi
     
