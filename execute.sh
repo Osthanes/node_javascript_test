@@ -57,7 +57,8 @@ else
     npm install selenium-webdriver selenium-standalone wd-sync wd mocha mocha-phantomjs chai \
     chai-as-promised phantomjs webdriverio chromedriver
     sudo xvfb-run eval $TEST_CMD
-
+fi
+    
 RESULT=$?
 
 if [ $RESULT -ne 0 ]; then
