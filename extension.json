@@ -33,14 +33,15 @@
 set +x
 set +e 
 export INIT_START_TIME=$(date +\"%s\")
+
+export TEST_CMD=#TEST_CMD#        
         
 . $EXT_DIR/_init.sh
 INIT_END_TIME=$(date +\"%s\")
 INIT_EST_TIME=$(($INIT_END_TIME-$INIT_START_TIME))
 echo -e \"Init runtime of `date -u -d @\"$INIT_EST_TIME\" +\'%-Mm %-Ss\'`\"
         
-/bin/sh ${EXT_DIR}/execute.sh
-    
+/bin/sh ${EXT_DIR}/execute.sh    
 RESULT=$?
     
 if [ $RESULT -ne 0 ]; then

@@ -33,6 +33,31 @@ debugme() {
 set +e
 set +x 
 
+#install phantomjs, firefox, chrome, and xvfb
+sudo apt-get update
+
+echo "Installing phantomjs..."
+npm install phantomjs
+
+echo "Installing Chrome..."
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo add-apt-repository 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+sudo apt-get update
+sudo apt-get install -q -y google-chrome-stable
+
+echo "Installing XVFB and Firefox..."
+sudo apt-get -y install xvfb firefox
+
+#if no test cmd provided, assume Node app
+if [ -z "${TEST_CMD}" ]; then
+    npm install
+    sudo xvfb-run npm test
+#test cmd provided so install typical items and run cmd
+else
+    npm install selenium-webdriver selenium-standalone wd-sync wd mocha mocha-phantomjs chai \
+    chai-as-promised phantomjs webdriverio chromedriver
+    sudo xvfb-run eval $TEST_CMD
+
 RESULT=$?
 
 if [ $RESULT -ne 0 ]; then
