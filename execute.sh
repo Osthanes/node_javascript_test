@@ -51,12 +51,12 @@ sudo apt-get -y install xvfb firefox
 #if no test cmd provided, assume Node app
 if [ -z "${TEST_CMD}" ]; then
     npm install
-    sudo xvfb-run npm test
+    xvfb-run npm test
 #test cmd provided so install typical items and run cmd
 else
     npm install selenium-webdriver selenium-standalone wd-sync wd mocha mocha-phantomjs chai \
     chai-as-promised phantomjs webdriverio chromedriver
-    sudo xvfb-run eval $TEST_CMD
+    xvfb-run eval $TEST_CMD
 fi
     
 RESULT=$?
