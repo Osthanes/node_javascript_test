@@ -48,6 +48,7 @@ npm install -g phantomjs
 echo "Installing XVFB and Firefox..."
 sudo apt-get -y install xvfb firefox
 
+ls
 #if no test cmd provided, assume Node app
 if [ -z "${TEST_CMD}" ]; then
     #npm install
