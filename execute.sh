@@ -41,7 +41,7 @@ npm install -g phantomjs
 
 echo "Installing Chrome..."
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-sudo add-apt-repository 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+sudo add-apt-repository -y 'deb http://dl.google.com/linux/chrome/deb/ stable main'
 sudo apt-get update
 sudo apt-get -y install -q -y google-chrome-stable
 
