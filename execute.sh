@@ -52,7 +52,7 @@ ls
 #if no test cmd provided, assume Node app
 if [ -z "${TEST_CMD}" ]; then
     #npm install
-    xvfb-run npm test
+    npm test
 #test cmd provided so install typical items and run cmd
 else
     npm install selenium-webdriver 
