@@ -51,10 +51,12 @@ sudo apt-get -y install xvfb firefox
 ls
 #if no test cmd provided, assume Node app
 if [ -z "${TEST_CMD}" ]; then
+    echo "Node.js application detected: "
     #npm install
     npm test
 #test cmd provided so install typical items and run cmd
 else
+    echo "Plain Javascript detected: "
     npm install selenium-webdriver 
     npm install selenium-standalone
     npm install wd-sync
