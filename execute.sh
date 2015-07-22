@@ -53,8 +53,7 @@ ls
 if [ -z "${TEST_CMD}" ]; then
     echo "Node.js application detected: "
     #npm install
-    cat package.json
-    npm test
+    xvfb-run npm uitest
 #test cmd provided so install typical items and run cmd
 else
     echo "Plain Javascript detected: "
