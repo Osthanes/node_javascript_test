@@ -50,7 +50,7 @@ sudo apt-get -y install xvfb firefox
 
 #if no test cmd provided, assume Node app
 if [ -z "${TEST_CMD}" ]; then
-    npm install
+    #npm install
     xvfb-run npm test
 #test cmd provided so install typical items and run cmd
 else
