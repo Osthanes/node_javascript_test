@@ -39,11 +39,11 @@ sudo apt-get update
 echo "Installing phantomjs..."
 npm install -g phantomjs
 
-#echo "Installing Chrome..."
-#wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-#sudo add-apt-repository 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-#sudo apt-get update
-#sudo apt-get -y install -q -y google-chrome-stable
+echo "Installing Chrome..."
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+sudo add-apt-repository 'deb http://dl.google.com/linux/chrome/deb/ stable main'
+sudo apt-get update
+sudo apt-get -y install -q -y google-chrome-stable
 
 echo "Installing XVFB and Firefox..."
 sudo apt-get -y install xvfb firefox
@@ -52,9 +52,7 @@ ls
 #if no test cmd provided, assume Node app
 if [ -z "${TEST_CMD}" ]; then
     echo "Node.js application detected: "
-    #npm install
-    cat package.json
-    git rev-parse HEAD
+    npm install
     xvfb-run npm test
 #test cmd provided so install typical items and run cmd
 else
