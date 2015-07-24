@@ -126,3 +126,10 @@ if [[ $DEBUG -eq 1 ]]; then
     dpkg -l | grep '^ii' > $EXT_DIR/pkglist2
     diff $EXT_DIR/pkglist $EXT_DIR/pkglist2
 fi
+
+############################################
+# Set app name and test url
+############################################
+URL=$(cf app $CF_APP_NAME | grep 'urls:' | awk '{print $2}' | cut -d '*' -f 2)
+TEST_URL="https://$URL"
+export TEST_URL
