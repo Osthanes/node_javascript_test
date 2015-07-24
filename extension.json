@@ -68,9 +68,7 @@
         "shell": "#!/bin/bash
 set +x
 set +e 
-export INIT_START_TIME=$(date +\"%s\")
-
-export TEST_CMD=#TEST_CMD#        
+export INIT_START_TIME=$(date +\"%s\")       
         
 . $EXT_DIR/_init.sh
 INIT_END_TIME=$(date +\"%s\")
