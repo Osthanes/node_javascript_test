@@ -61,6 +61,10 @@
         {
             "type": "Artifacts",
             "inclusion" : "always"
+        },
+        {
+            "type": "Tests",
+            "inclusion": "optional"
         }
     ],
     "execution": {
@@ -70,35 +74,28 @@ set +x
 set +e 
 export INIT_START_TIME=$(date +\"%s\")       
         
+export CMD_CHOICE=\"#SELECT_CMD#\"
+
+function custom_cmd {
+    eval #COMMAND#
+    RESULT=$?
+    if [ $RESULT -ne 0 ] || [ $PY_RES -ne 0 ]; then
+        exit 1
+    fi
+}
+    
+export -f custom_cmd
+        
 . $EXT_DIR/_init.sh
 INIT_END_TIME=$(date +\"%s\")
 INIT_EST_TIME=$(($INIT_END_TIME-$INIT_START_TIME))
 echo -e \"Init runtime of `date -u -d @\"$INIT_EST_TIME\" +\'%-Mm %-Ss\'`\"
         
-dropdown_choice=\"#SELECT_CMD#\"
-npm install phantomjs
-
-if [[ $dropdown_choice == \"npm test\" ]] || [[ $dropdown_choice == \"grunt test\" ]] || [[ $dropdown_choice == \"grunt\" ]]; then
-    npm install
-    eval #SELECT_CMD#
-    RESULT=$?
-    if [ $RESULT -ne 0 ]; then
-        exit 1
-    fi
-fi
-if [[ $dropdown_choice == \"ant test\" ]] || [[ $dropdown_choice == \"mvn test\" ]]; then
-    eval #SELECT_CMD#
-    RESULT=$?
-    if [ $RESULT -ne 0 ]; then
-        exit 1
-    fi
-fi
-if [[ $dropdown_choice == \"custom\" ]]; then
-    /bin/bash -e #COMMAND#
-    RES=$?
-    if [$RES -ne 0 ]; then
-        exit 1
-    fi
+. $EXT_DIR/execute.sh
+RESULT=$?
+        
+if [ $RESULT -ne 0 ]; then
+    exit 1
 fi
 
 "

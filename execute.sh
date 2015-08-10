@@ -33,70 +33,26 @@ debugme() {
 set +e
 set +x 
 
-##install phantomjs, firefox, chrome, and xvfb
-#sudo apt-get update
-#
-#echo "Installing phantomjs..."
-#npm install -g phantomjs
-#
-#echo "Installing Chrome..."
-#wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-#sudo add-apt-repository -y 'deb http://dl.google.com/linux/chrome/deb/ stable main'
-#sudo apt-get update
-#sudo apt-get -y install -q -y google-chrome-stable
-#
-#echo "Installing XVFB and Firefox..."
-#sudo apt-get -y install xvfb firefox
-#
-#ls
-##if no test cmd provided, assume Node app
-#if [ -z "${TEST_CMD}" ]; then
-#    echo "Configured application detected: "
-#    npm install
-#    
-#    #check for gruntfile
-#    if [ -f Gruntfile.js ]; then
-#        #run grunt test if task is registered
-#        if grep -q "grunt.registerTask('test'," Gruntfile.js; then
-#            grunt test
-#            RESULT=$?
-#            if [ $RESULT -ne 0 ]; then
-#                exit 1
-#            fi
-#        else
-#        #otherwise run default
-#            grunt
-#            RESULT=$?
-#            if [ $RESULT -ne 0 ]; then
-#                exit 1
-#            fi
-#        fi
-#    else
-#        npm test
-#        RESULT=$?
-#        if [ $RESULT -ne 0 ]; then
-#            exit 1
-#        fi
-#    fi
-#
-##test cmd provided so install typical items and run cmd
-#else
-#    echo "Plain Javascript detected: "
-#    npm install selenium-webdriver 
-#    npm install selenium-standalone
-#    npm install wd-sync
-#    npm install wd 
-#    npm install mocha
-#    npm install mocha-phantomjs
-#    npm install chai
-#    npm install chai-as-promised
-#    npm install webdriverio 
-#    npm install chromedriver
-#    xvfb-run eval $TEST_CMD
-#fi
-#    
-#RESULT=$?
-#
-#if [ $RESULT -ne 0 ]; then
-#    exit 1
-#fi
+cmd_choice=$CMD_CHOICE
+
+function execute { 
+    eval $CMD_CHOICE
+    RESULT=$?
+    
+    if [ $RESULT -ne 0 ] || [ $PY_RES -ne 0 ]; then
+        exit 1
+    fi
+}
+
+if [[ $cmd_choice == "npm test" ]] || [[ $cmd_choice == "grunt test" ]] || [[ $cmd_choice == "grunt" ]]; then
+    npm install
+    execute
+fi
+if [[ $cmd_choice == "ant test" ]] || [[ $cmd_choice == "mvn test" ]]; then
+    echo "Installing phantomjs..."
+    npm install -g phantomjs
+    execute
+fi
+if [[ $cmd_choice == "custom" ]]; then
+    custom_cmd
+fi
