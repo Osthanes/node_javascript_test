@@ -76,40 +76,40 @@ export LOG_DIR=$ARCHIVE_DIR
 
 #############################
 # Install Cloud Foundry CLI #
-#############################
-pushd . 
-echo "Installing Cloud Foundry CLI"
-cd $EXT_DIR 
-mkdir bin
-cd bin
-curl --silent -o cf-linux-amd64.tgz -v -L https://cli.run.pivotal.io/stable?release=linux64-binary &>/dev/null 
-gunzip cf-linux-amd64.tgz &> /dev/null
-tar -xvf cf-linux-amd64.tar  &> /dev/null
-
-cf help &> /dev/null
-RESULT=$?
-if [ $RESULT -ne 0 ]; then
-    echo "Cloud Foundry CLI not already installed, adding CF to PATH"
-    export PATH=$PATH:$EXT_DIR/bin
-else 
-    echo 'Cloud Foundry CLI already available in container.  Latest CLI version available in ${EXT_DIR}/bin'  
-fi 
-
-# check that we are logged into cloud foundry correctly
-cf spaces 
-RESULT=$?
-if [ $RESULT -ne 0 ]; then
-    echo -e "${red}Failed to check cf spaces to confirm login${no_color}"
-    exit $RESULT
-else 
-    echo -e "${green}Successfully logged into IBM Bluemix${no_color}"
-fi 
-popd 
-
-export container_cf_version=$(cf --version)
-export latest_cf_version=$(${EXT_DIR}/bin/cf --version)
-echo "Container Cloud Foundry CLI Version: ${container_cf_version}"
-echo "Latest Cloud Foundry CLI Version: ${latest_cf_version}"
+##############################
+#pushd . 
+#echo "Installing Cloud Foundry CLI"
+#cd $EXT_DIR 
+#mkdir bin
+#cd bin
+#curl --silent -o cf-linux-amd64.tgz -v -L https://cli.run.pivotal.io/stable?release=linux64-binary &>/dev/null 
+#gunzip cf-linux-amd64.tgz &> /dev/null
+#tar -xvf cf-linux-amd64.tar  &> /dev/null
+#
+#cf help &> /dev/null
+#RESULT=$?
+#if [ $RESULT -ne 0 ]; then
+#    echo "Cloud Foundry CLI not already installed, adding CF to PATH"
+#    export PATH=$PATH:$EXT_DIR/bin
+#else 
+#    echo 'Cloud Foundry CLI already available in container.  Latest CLI version available in ${EXT_DIR}/bin'  
+#fi 
+#
+## check that we are logged into cloud foundry correctly
+#cf spaces 
+#RESULT=$?
+#if [ $RESULT -ne 0 ]; then
+#    echo -e "${red}Failed to check cf spaces to confirm login${no_color}"
+#    exit $RESULT
+#else 
+#    echo -e "${green}Successfully logged into IBM Bluemix${no_color}"
+#fi 
+#popd 
+#
+#export container_cf_version=$(cf --version)
+#export latest_cf_version=$(${EXT_DIR}/bin/cf --version)
+#echo "Container Cloud Foundry CLI Version: ${container_cf_version}"
+#echo "Latest Cloud Foundry CLI Version: ${latest_cf_version}"
 
 ################################
 # get the extensions utilities #
@@ -131,5 +131,10 @@ fi
 # Set app name and test url
 ############################################
 URL=$(cf app $CF_APP_NAME | grep 'urls:' | awk '{print $2}' | cut -d '*' -f 2)
-TEST_URL="https://$URL"
-export TEST_URL
+if [ -z "$URL" ]; then
+    #do nothing
+    echo "No app name to pull..."
+else
+    TEST_URL="https://$URL"
+    export TEST_URL
+fi
